@@ -14,14 +14,19 @@ canvas {
 
 var myGamePiece;
 var myGamePieceCow;
+var myGamePieceBeam;
 var gameImage = "images/alienRight.png";
 var gameImageCow = "images/cowImage.png";
+var gameImageBeamEmpty = "";
+var gameImageBeam = "images/beam.png";
 
 
 function startGame() {
-    myGamePiece = new component(135, 135, gameImage, 10, 10, "image");
+    myGamePieceAlien = new component(135, 135, gameImage, 10, 10, "image");
     myGamePieceCow = new component(75, 75, gameImageCow, 900, 475, "image");
+    myGamePieceBeam = new component(100, 275, gameImageBeamEmpty, 30, 140, "image");
     myGameArea.start();
+    cowMove();
     
 }
 
@@ -75,10 +80,13 @@ function component(width, height, color, x, y, type) {
 
 function updateGameArea() {
     myGameArea.clear();
-    myGamePiece.newPos();
-    myGamePiece.update();
+    myGamePieceAlien.newPos();
+    myGamePieceAlien.update();
     myGamePieceCow.newPos();
     myGamePieceCow.update();
+    myGamePieceBeam.newPos();
+    myGamePieceBeam.update();
+    
     cowMove();
 }
 
@@ -88,33 +96,44 @@ function cowMove(){
 }
 
 function moveup() {
-    myGamePiece.speedY = -1; 
+    myGamePieceAlien.speedY = -1; 
+    myGamePieceBeam.speedY = -1; 
 }
 
 function movedown() {
-    myGamePiece.speedY = 1; 
+    myGamePieceAlien.speedY = 1; 
+    myGamePieceBeam.speedY = 1; 
 }
 
 function moveleft() {
-    myGamePiece.image.src = "images/alienLeft.png";
-    myGamePiece.speedX = -1; 
+    myGamePieceAlien.image.src = "images/alienLeft.png";
+    myGamePieceAlien.speedX = -1;
+    myGamePieceBeam.speedX = -1;
+
   
 }
 
 
 
 function moveright() {
-    myGamePiece.image.src = "images/alienRight.png";
-    myGamePiece.speedX = 1; 
+    myGamePieceAlien.image.src = "images/alienRight.png";
+    myGamePieceAlien.speedX = 1; 
+    myGamePieceBeam.speedX = 1; 
 
 }
 
 function clearmove() {
-    myGamePiece.speedX = 0; 
-    myGamePiece.speedY = 0; 
+    myGamePieceAlien.speedX = 0; 
+    myGamePieceAlien.speedY = 0;
+    myGamePieceBeam.speedX = 0; 
+    myGamePieceBeam.speedY = 0;
+    myGamePieceBeam.image.src = gameImageBeamEmpty;
+
 }
 
-
+function beam(){
+    myGamePieceBeam.image.src = gameImageBeam;
+}
 
 
 </script>
@@ -123,9 +142,10 @@ function clearmove() {
   <button onmousedown="moveleft()" onmouseup="clearmove()" ontouchstart="moveleft()">LEFT</button>
   <button onmousedown="moveright()" onmouseup="clearmove()" ontouchstart="moveright()">RIGHT</button><br><br>
   <button onmousedown="movedown()" onmouseup="clearmove()" ontouchstart="movedown()">DOWN</button>
+  <button onmousedown="beam()" onmouseup="clearmove()" ontouchstart="movedown()">Beam</button>
 </div>
 
-<p>Jims Alien Game</p>
+
 
 
 
