@@ -13,10 +13,16 @@ canvas {
 <script>
 
 var myGamePiece;
+var myGamePieceCow;
+var gameImage = "images/alienRight.png";
+var gameImageCow = "images/cowImage.png";
+
 
 function startGame() {
-    myGamePiece = new component(100, 100, "images/alienRight.png", 10, 10, "image");
+    myGamePiece = new component(135, 135, gameImage, 10, 10, "image");
+    myGamePieceCow = new component(75, 75, gameImageCow, 900, 475, "image");
     myGameArea.start();
+    
 }
 
 var myGameArea = {
@@ -71,6 +77,14 @@ function updateGameArea() {
     myGameArea.clear();
     myGamePiece.newPos();
     myGamePiece.update();
+    myGamePieceCow.newPos();
+    myGamePieceCow.update();
+    cowMove();
+}
+
+function cowMove(){
+    myGamePieceCow.x -= 2;
+    
 }
 
 function moveup() {
@@ -82,20 +96,27 @@ function movedown() {
 }
 
 function moveleft() {
+    myGamePiece.image.src = "images/alienLeft.png";
     myGamePiece.speedX = -1; 
-    //myGamePiece = new component(100, 100, "images/alienufoLeft.jpg", 10, 10, "image");
-
+  
 }
 
+
+
 function moveright() {
+    myGamePiece.image.src = "images/alienRight.png";
     myGamePiece.speedX = 1; 
-   // myGamePiece = new component(100, 100, "images/alienufoRight.jpg", 10, 10, "image");
+
 }
 
 function clearmove() {
     myGamePiece.speedX = 0; 
     myGamePiece.speedY = 0; 
 }
+
+
+
+
 </script>
 <div style="text-align:center;width:480px;">
   <button onmousedown="moveup()" onmouseup="clearmove()" ontouchstart="moveup()">UP</button><br><br>
