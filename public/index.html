@@ -2,12 +2,15 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<div class="gameCanvas">
 <style>
 canvas {
     border:2px solid blue;
     background-image: url("background.png");
 }
 </style>
+</div>
 </head>
 <body onload="startGame()">
 <script>
@@ -23,10 +26,12 @@ var gameImageBeam = "images/beam.png";
 
 function startGame() {
     myGamePieceAlien = new component(135, 135, gameImage, 10, 10, "image");
-    myGamePieceCow = new component(75, 75, gameImageCow, 900, 475, "image");
     myGamePieceBeam = new component(100, 275, gameImageBeamEmpty, 30, 140, "image");
+
     myGameArea.start();
-    cowMove();
+    createCow();
+    
+    
     
 }
 
@@ -39,12 +44,11 @@ var myGameArea = {
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.frameNo = 0;
         this.interval = setInterval(updateGameArea, 20);
-        },
-    clear : function() {
+        
+
+    }, 
+    clear : function(){
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    },
-    stop : function() {
-        clearInterval(this.interval);
     }
 }
 
@@ -87,13 +91,20 @@ function updateGameArea() {
     myGamePieceBeam.newPos();
     myGamePieceBeam.update();
     
-    cowMove();
+    
+    
+   
 }
 
-function cowMove(){
-    myGamePieceCow.x -= 2;
-    
+function createCow(){
+    myGamePieceCow = new component(50, 50, gameImageCow, 900, 475, "image");
+    setInterval(moveCow,2000)
 }
+
+function moveCow() {
+    myGamePieceCow.x -= 50;
+}
+
 
 function moveup() {
     myGamePieceAlien.speedY = -1; 
@@ -132,11 +143,35 @@ function clearmove() {
 }
 
 function beam(){
+    
     myGamePieceBeam.image.src = gameImageBeam;
+    var score = 0;
+    var cowPositionX= myGamePieceCow.x;
+    var beamPositionX = myGamePieceBeam.x;
+    var beamPositionNeg = beamPositionX - 30;
+    var beamPositionPos = beamPositionX + 30;
+    //console.log("Cow x position:" + myGamePieceCow.x);
+    //console.log("Beam x position:" + myGamePieceBeam.x);
+    
+    console.log(beamPositionNeg);
+    console.log(beamPositionPos);
+
+    if ( cowPositionX >= beamPositionNeg && cowPositionX  <= beamPositionPos ) {
+    score += 1;
+    myGamePieceCow.image.src = "";
+    document.getElementById("score").innerHTML = score;
+ 
 }
 
+}
+
+window.addEventListener('keydown', function (e) {
+          movedown();
+        })
 
 </script>
+
+
 <div style="text-align:center;width:480px;">
   <button onmousedown="moveup()" onmouseup="clearmove()" ontouchstart="moveup()">UP</button><br><br>
   <button onmousedown="moveleft()" onmouseup="clearmove()" ontouchstart="moveleft()">LEFT</button>
@@ -147,6 +182,8 @@ function beam(){
 
 
 
+<p>SCORE:</p><div id="score"></div>
+
 
 
 <script src="index.js"></script>  
@@ -154,3 +191,8 @@ function beam(){
 </html>
 
 
+<style>
+    body{
+        background-color: teal;
+    }
+</style>
